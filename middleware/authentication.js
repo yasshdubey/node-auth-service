@@ -1,4 +1,5 @@
 // middleware/authMiddleware.js
+require('dotenv').config
 const jwt = require('jsonwebtoken');
 const { Token } = require('../db/models');
 
@@ -10,7 +11,7 @@ async function authenticateToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.JWTSECRET);
     const storedToken = await Token.findOne({ where: { userId: decoded.userId, token } });
 
     if (!storedToken) {
